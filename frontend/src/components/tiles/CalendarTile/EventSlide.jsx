@@ -52,9 +52,7 @@ const styles = {
 const EventSlide = ({
     classes, summary, duration, location, description
 }) => {
-    const tempDesc = document.createElement('div')
-    tempDesc.innerHTML = description
-    description = tempDesc.innerText.trim()
+    description = description || 'None'
     description = (description.length > wordLimit) ? `${description.slice(0, wordLimit)}...` : description
     return (
         <div className={classes.root}>
@@ -72,7 +70,7 @@ const EventSlide = ({
             <div className={classes.description}>
                 <div className={classes.label}> Description</div>
                 <p style={{ margin: 0 }}>
-                    {description || 'No Description Provided'}
+                    {(description.length > wordLimit) ? `${description.slice(0, wordLimit)}...` : description}
                 </p>
             </div>
         </div>
