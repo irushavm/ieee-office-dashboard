@@ -79,7 +79,7 @@ class CredentialRefresh(APIView):
         return JsonResponse(data=context, status=200)
 
 
-OCTRANSPO_GET_BASE_URL='https://api.octranspo1.com/v1.2/GetNextTripsForStopAllRoutes?format=json&appID={}&apiKey={}&stopNo={}'
+OCTRANSPO_GET_BASE_URL='https://api.octranspo1.com/v1.3/GetNextTripsForStopAllRoutes?format=json&appID={}&apiKey={}&stopNo={}'
 
 TWITTER_GET_TOKEN_URL = 'https://api.twitter.com/oauth2/token?grant_type=client_credentials'
 TWITTER_GET_TWEERTS_URL = 'https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name={}&count={}'
