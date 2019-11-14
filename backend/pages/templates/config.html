@@ -55,7 +55,7 @@
 
             $('#configForm').submit(function() {
                 try {
-                    JSON.parse($("#config").html());
+                    JSON.parse($("textarea[name=config]").val());
                     return true;
                 } catch(e) {
                     $("#errorConfig").text("Invalid Format. Please try again");
