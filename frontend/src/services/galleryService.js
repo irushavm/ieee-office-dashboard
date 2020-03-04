@@ -18,12 +18,12 @@ export default {
         const QUERY = `parents in '${serviceConfig.folder || '1aWcL4Wc7lOQuSI1-fZ2gX49__n0uwpuX'}'`
         const URL = `https://www.googleapis.com/drive/v3/files`
         const params = new URLSearchParams({
-            q: QUERY,
+            q: QUERY
         })
         const response = await fetch(`${URL}?${params}`,{
             headers: {
-                'Authorization': `Bearer ${access_token}`,
-            },
+                'Authorization': `Bearer ${access_token}`
+            }
         })
         const json =  await handleErrors(response)
         return json

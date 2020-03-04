@@ -27,5 +27,10 @@
         "consistent-return": 0,
         "prefer-promise-reject-errors": 0,
         "import/prefer-default-export": 0
+    },
+    "settings": {
+      "react": {
+        "version": "detect"
+      }
     }
 }

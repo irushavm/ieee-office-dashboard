@@ -2,7 +2,7 @@ import services from '../services'
 import {
     loginRefreshBegin,
     loginRefreshSuccess
-} from './account';
+} from './account'
 
 export const SET_DATA_STALE = 'SET_DATA_STALE'
 export const setDataStale = card => ({ type: SET_DATA_STALE, card })

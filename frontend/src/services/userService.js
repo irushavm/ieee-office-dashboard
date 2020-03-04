@@ -36,7 +36,7 @@ export default {
             timeout *= 60 /*eslint-disable-line no-fallthrough */
         case 'S':
             timeout *= 1000
-            break;
+            break
         default:
             console.error('Unknown timeout unit')
         }
@@ -48,7 +48,7 @@ export default {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${access}`
             },
-            method: 'GET',
+            method: 'GET'
         })
         const { config } = await handleErrors(response)
         return Object.values(JSON.parse(config))

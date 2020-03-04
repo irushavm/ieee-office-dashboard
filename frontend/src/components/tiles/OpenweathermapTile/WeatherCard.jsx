@@ -67,7 +67,7 @@ const WeatherCard = ({
                 <div>
                     {high}
                     {' '}
-℃
+                    ℃
                 </div>
                 <div className={classes.label}>HIGH</div>
 
@@ -76,7 +76,7 @@ const WeatherCard = ({
                 <div>
                     {low}
                     {' '}
-℃
+                    ℃
                 </div>
                 <div className={classes.label}>LOW</div>
 
@@ -85,7 +85,7 @@ const WeatherCard = ({
                 <div>
                     {wind}
                     {' '}
-kph
+                    kph
                 </div>
                 <div className={classes.label}>WIND</div>
             </div>

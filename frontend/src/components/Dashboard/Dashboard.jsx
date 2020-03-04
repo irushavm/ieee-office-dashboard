@@ -40,7 +40,7 @@ const styles = {
         }
     },
     bannerPaddng: {
-        paddingLeft: '10px',
+        paddingLeft: '10px'
     }
 }
 
@@ -128,14 +128,14 @@ class Dashboard extends Component {
             <>
                 {
                     config[0] ?
-                    <div className={classes.root}>
-                        <div className={classes.banner}>
-                            <a className={`${classes.bannerLink} ${classes.bannerPaddng}`} href={serverURL}>Go to Admin Site</a>
-                            <div className={classes.bannerPaddng} onClick={this.onLogout}>Logout</div>
+                        <div className={classes.root}>
+                            <div className={classes.banner}>
+                                <a className={`${classes.bannerLink} ${classes.bannerPaddng}`} href={serverURL}>Go to Admin Site</a>
+                                <div className={classes.bannerPaddng} onClick={this.onLogout}>Logout</div>
+                            </div>
+                            {config.map(this.createLayout)}
                         </div>
-                        {config.map(this.createLayout)}
-                    </div>
-                    : <div></div>
+                        : <div></div>
                 }
             </>
         )
@@ -147,7 +147,7 @@ const mapStateToProps = state => ({ config: state.account.config, ...state.cards
 const mapDispatchToProps = dispatch => ({
     getDataIfNeeded: (name, serviceConfig) => dispatch(getDataIfNeeded(name, serviceConfig)),
     setDataStale: name => dispatch(setDataStale(name)),
-    getConfig: () => dispatch(getConfig()),
+    getConfig: () => dispatch(getConfig())
 })
 
 Dashboard.propTypes = {

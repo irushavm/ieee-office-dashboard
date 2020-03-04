@@ -36,7 +36,7 @@ const WeatherTile = ({ classes, card, onRefreshClick }) => {
     if (card && card.data && card.data[0] && card.data[0].status) {
         return (
             <div className={classes.error}>
-        Server Error:
+                Server Error:
                 {' '}
                 {card.data[0].msg}
             </div>

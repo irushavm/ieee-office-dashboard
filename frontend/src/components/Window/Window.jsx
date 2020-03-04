@@ -40,7 +40,7 @@ Window.propTypes = {
     performLogin: PropTypes.func.isRequired,
     clearLoginMessage: PropTypes.func.isRequired,
     accountError: PropTypes.object,
-    accountSuccess: PropTypes.bool,
+    accountSuccess: PropTypes.bool
 }
 
 const mapStateToProps = state => ({

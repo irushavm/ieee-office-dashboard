@@ -47,7 +47,7 @@ const styles = {
         fontSize: '2em',
         overflow: '-webkit-paged-y',
         '& img': {
-          display: 'inline'
+            display: 'inline'
         }
     }
 }

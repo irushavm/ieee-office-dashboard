@@ -23,13 +23,13 @@ const styles = {
 const EmptyTile = ({ classes, provider, type, error }) => (
     <div className={classes.error}>
         <div>
-      Unable to get information from {provider}
+            Unable to get information from {provider}
         </div>
         <div className={classes.type}>
-      Error Type: {type}
+            Error Type: {type}
         </div>
         <div className={classes.details}>
-      Details: {error}
+            Details: {error}
         </div>
     </div>
 )

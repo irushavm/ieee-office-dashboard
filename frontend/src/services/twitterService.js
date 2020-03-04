@@ -9,14 +9,14 @@ export default {
         return access_token
     },
     getData: async (access_token, serviceConfig) => {
-        const apiAccount = serviceConfig.account || 'ieeecu';
-        const apiCount = serviceConfig.count || 10;
+        const apiAccount = serviceConfig.account || 'ieeecu'
+        const apiCount = serviceConfig.count || 10
 
         const params = new URLSearchParams({ screen_name: apiAccount, count: apiCount })
         const response = await fetch(SERVICE_URL + params,{
             headers: {
-                'Authorization': `Bearer ${access_token}`,
-            },
+                'Authorization': `Bearer ${access_token}`
+            }
         })
         const { data } = await handleErrors(response)
         console.log(typeof data)
@@ -27,7 +27,7 @@ export default {
             return {
                 id,
                 message: text,
-                time: moment(time, 'ddd MMM DD HH:mm:ss Z YYYY').calendar(),
+                time: moment(time, 'ddd MMM DD HH:mm:ss Z YYYY').calendar()
             }
         }) : response)
 }

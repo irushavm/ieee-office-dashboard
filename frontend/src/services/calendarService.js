@@ -29,12 +29,12 @@ export default {
             timeMin: (new Date()).toISOString(),
             showDeleted: false,
             singleEvents: true,
-            maxResults: 15,
+            maxResults: 15
         })
         const response = await fetch(`${URL}?${params}`,{
             headers: {
-                'Authorization': `Bearer ${access_token}`,
-            },
+                'Authorization': `Bearer ${access_token}`
+            }
         })
         const json =  await handleErrors(response)
         return json

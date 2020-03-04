@@ -21,8 +21,8 @@ export default {
         return Promise.all(apiStops.map( async (stopNo) => {
             const response = await fetch(`${URL_BASE}?stop=${stopNo}`,{
                 headers: {
-                    'Authorization': `Bearer ${access_token}`,
-                },
+                    'Authorization': `Bearer ${access_token}`
+                }
             })
             const json =  await handleErrors(response)
             return json

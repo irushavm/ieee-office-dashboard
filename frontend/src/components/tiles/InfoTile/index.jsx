@@ -45,7 +45,7 @@ const styles = {
         '&:hover': {
             cursor: 'pointer',
             backgroundColor: '#aaa',
-            color: '#777',
+            color: '#777'
 
         }
     }

@@ -21,8 +21,8 @@ export default {
         ? response.map(({
             id, story, name, message, full_picture: src, created_time: time
         }) => (
-                {
-                    id, story, name, message, src, time: moment(time).calendar()
-                }
-            )) : response)
+            {
+                id, story, name, message, src, time: moment(time).calendar()
+            }
+        )) : response)
 }
