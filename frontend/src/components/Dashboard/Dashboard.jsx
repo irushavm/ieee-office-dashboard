@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'react-jss'
 import { connect } from 'react-redux'
-import TileFrame from '../TileFrame'
+import { TileFrame } from '../TileFrame'
 
+import { Tile } from '../Tile'
 import tiles from '../tiles'
-import EmptyTile from '../tiles/EmptyTile'
 import { getDataIfNeeded, setDataStale, getConfig } from '../../actions'
 import { serverURL } from '../../App.config'
 import services from '../../services'
@@ -93,12 +93,28 @@ class Dashboard extends Component {
                     this.serviceInit.push(tileName)
                 }
             }
-            return tileData
-                ? (
-                    <TileFrame key={`level-${this.layoutLevels}-${index}`} loading={tileData && tileData.isFetching} style={{ flex: `${flexAmount * 100}%`, margin: '1vh' }}>
-                        {tileData.error === undefined ? <TileElement card={tileData} /> : <EmptyTile provider={tileType} {...tileData.error} />}
+
+            const tileFrameProps = {
+                key: `level-${this.layoutLevels}-${index}`,
+                loading: tileData && tileData.isFetching,
+                provider: tileType,
+                error: tileData.error,
+                style: {
+                    flex: `${flexAmount * 100}%`,
+                    margin: '1vh'
+                }
+            }
+
+            if (['info'].includes(tileName)) {
+                return (
+                    <TileFrame {...tileFrameProps}>
+                        <TileElement card={tileData} />
                     </TileFrame>
-                ) : <div key={`level-${this.layoutLevels}-${index}`} />
+                )
+            }
+            return <TileFrame {...tileFrameProps}>
+                <Tile name={tileName} config={tiles.config[tileName]} data={tileData} />
+            </TileFrame>
         }
 
         // Create layout and call function recursively
@@ -153,7 +169,10 @@ const mapDispatchToProps = dispatch => ({
 Dashboard.propTypes = {
     classes: PropTypes.object.isRequired,
     getDataIfNeeded: PropTypes.func.isRequired,
-    setDataStale: PropTypes.func.isRequired
+    setDataStale: PropTypes.func.isRequired,
+    calendar: PropTypes.object,
+    config: PropTypes.object.isRequired,
+    getConfig: PropTypes.func
 }
 
 

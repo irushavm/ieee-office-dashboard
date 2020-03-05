@@ -19,7 +19,6 @@ export default {
             }
         })
         const { data } = await handleErrors(response)
-        console.log(typeof data)
         return data
     },
     transformResponse: response => (( response && response[0])

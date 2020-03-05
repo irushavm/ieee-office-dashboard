@@ -1,3 +1,7 @@
+setup:
+	# Copy git hooks into .git foler
+	cp -v .github/hooks/* ./git/hooks/
+
 deploy-heroku:
 	git checkout dev
 	git branch -D deploy-heroku; true

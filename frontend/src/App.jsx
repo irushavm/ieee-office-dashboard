@@ -8,6 +8,8 @@ import configureStore from './configureStore'
 import Window from './components/Window'
 import { body } from './styles'
 
+import './App.css'
+
 const styles = { body }
 
 class App extends Component {

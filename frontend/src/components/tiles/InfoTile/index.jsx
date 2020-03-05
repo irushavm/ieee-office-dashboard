@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import withStyles from 'react-jss'
+import PropTypes from 'prop-types'
 import moment from 'moment'
 
 
@@ -92,6 +93,11 @@ class InfoTile extends Component {
             </div>
         )
     }
+}
+
+InfoTile.propTypes = {
+    classes: PropTypes.object.isRequired,
+    card: PropTypes.object
 }
 
 export default withStyles(styles)(InfoTile)

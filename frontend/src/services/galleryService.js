@@ -9,7 +9,6 @@ export default {
         return token
     },
     getAuthRefresh: async (access_token) => {
-        console.log('performing refresh')
         const response = await fetch(`${AppConfig.serverURL}/api/credentials/google/refresh/`, { method: "post", headers: { Authorization: `Bearer ${access_token}` } })
         const { token } = await handleErrors(response)
         return token

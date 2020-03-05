@@ -12,10 +12,12 @@
     "react-jss": "^8.6.1",
     "react-redux": "^5.0.6",
     "react-slick": "^0.16.0",
+    "react-transition-group": "^4.3.0",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.2.0",
+    "styled-components": "^5.0.1",
     "typeface-roboto": "0.0.45"
   },
   "scripts": {
@@ -25,14 +27,20 @@
     "delete-map-files": "find ./build -name '*.map' -delete",
     "lint": "eslint --ext jsx,js ./src --fix",
     "postinstall": "cp ../.github/hooks/* ../.git/hooks/",
-    "test": "npm run build-config && react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "babel-eslint": "^10.0.1",
+    "@types/jest": "^25.1.3",
+    "@types/node": "^13.7.7",
+    "@types/react": "^16.9.23",
+    "@types/react-dom": "^16.9.5",
+    "@types/react-transition-group": "^4.2.4",
+    "@types/styled-components": "^5.0.1",
+    "eslint": "^6.6.0",
     "eslint-plugin-react": "^7.12.4",
-    "react-scripts": "^3.0.0"
+    "react-scripts": "^3.0.0",
+    "typescript": "^3.8.3"
   },
   "browserslist": [
     ">0.2%",

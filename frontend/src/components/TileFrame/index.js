@@ -1,3 +1,1 @@
-import TileFrame from './TileFrame'
-
-export default TileFrame
+export * from './TileFrame'

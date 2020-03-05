@@ -7,7 +7,7 @@ NC='\033[0m' # No Color
 echo -e "${YELLOW}In directory $PWD${NC}..."
 
 sudo apt-get update
-sudo apt-get install libssl-dev make build-essential libssl-dev zlib1g-dev libbz2-dev libsqlite3-dev libpq-dev postgresql-server-dev-all libffi-dev
+sudo apt-get install libssl-dev make build-essential libssl-dev zlib1g-dev libbz2-dev libsqlite3-dev libpq-dev postgresql-server-dev-all libffi-dev python3-pip
 # Install pyenv if does not exist via https://github.com/pyenv/pyenv-installer
 
 if ! type "pyenv" &> /dev/null; then
@@ -17,5 +17,7 @@ if ! type "pyenv" &> /dev/null; then
 else
     echo 'pyenv is installed'
 fi
+
+python3 -m pip install --user pipenv
 
 echo -e "${YELLOW}Run 'pipenv shell' then 'pipenv install'${NC}"

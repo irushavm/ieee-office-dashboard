@@ -13,11 +13,18 @@ export default {
         const body = await response.text()
         const data = JSON.parse(body.split('window._sharedData = ')[1].split(';</script>')[0])
         if (!data) throw new Error(data)
-        const result = data.entry_data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media.edges.map(({ node }) => ({
-            caption: node.edge_media_to_caption.edges[0].node.text,
-            imgSrc: node.display_url,
-            date: node.taken_at_timestamp
-        }))
+        const result = data.entry_data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media.edges.map(({ node }) => {
+            const ret = {
+                caption: node.edge_media_to_caption.edges[0].node.text,
+                imgSrc: node.display_url,
+                date: node.taken_at_timestamp
+            }
+
+            if (ret.caption.length > 200) {
+                ret.caption = `${ret.caption.substring(0, 200)}...`
+            }
+            return ret
+        })
         return result
 
     },
