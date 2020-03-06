@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import withStyles from 'react-jss'
+import styled, { css } from 'styled-components'
 import { connect } from 'react-redux'
 import { TileFrame } from '../TileFrame'
 
@@ -10,39 +10,46 @@ import { getDataIfNeeded, setDataStale, getConfig } from '../../actions'
 import { serverURL } from '../../App.config'
 import services from '../../services'
 
-const styles = {
-    root: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column'
-    },
-    banner: {
-        position: 'absolute',
-        fontSize: '60%',
-        color: '#fff',
-        display:'flex',
-        top: '0.5%',
-        textDecoration: 'underline',
-        '&:hover': {
-            cursor: 'pointer',
-            color: '#fff'
-        }
-    },
-    bannerLink: {
-        '&:link': {
-            color: '#fff'
-        },
-        '&:visited': {
-            color: '#fff'
-        },
-        '&:active': {
-            color: '#fff'
-        }
-    },
-    bannerPaddng: {
-        paddingLeft: '10px'
+
+const Container = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+`
+
+const Banner = styled.div`
+    position: absolute;
+    font-size: 60%;
+    color: #fff;
+    display: flex;
+    top: 0.5%;
+    text-decoration: underline;
+    &:hover {
+        cursor: pointer;
+        color: #fff;
     }
-}
+`
+
+const BannerLink = styled.a`
+    padding-left: 10px;
+    &:link {
+        color: #fff;
+    }
+    &:visited {
+        color: #fff;
+    },
+    &:active: {
+        color: #fff;
+    }
+`
+
+const LayoutContainer = styled.div`
+    display: flex;
+    ${(props) => css`
+        flex: ${props.flexBasis}%;
+        flex-direction: ${props.flexDir};
+    `}
+`
 
 class Dashboard extends Component {
     constructor(props) {
@@ -98,7 +105,7 @@ class Dashboard extends Component {
                 key: `level-${this.layoutLevels}-${index}`,
                 loading: tileData && tileData.isFetching,
                 provider: tileType,
-                error: tileData.error,
+                error: tileData && tileData.error,
                 style: {
                     flex: `${flexAmount * 100}%`,
                     margin: '1vh'
@@ -119,15 +126,13 @@ class Dashboard extends Component {
 
         // Create layout and call function recursively
         const flexDir = element.layout[0].h === 1 ? 'row' : 'column'
-        this.layoutHasChildren = true
         return (
-            <div
-                key={`level-${this.layoutLevels}-${index}`} style={{
-                    display: 'flex', flex: `${flexAmount * 100}%`, flexDirection: flexDir, margin: this.layoutHasChildren ? '' : '1vh'
-                }}
+            <LayoutContainer key={`level-${this.layoutLevels}-${index}`}
+                flexBasis={flexAmount * 100}
+                flexDir={flexDir}
             >
                 {element.layout.map(this.createLayout)}
-            </div>
+            </LayoutContainer>
         )
     }
 
@@ -137,23 +142,17 @@ class Dashboard extends Component {
     }
 
     render() {
-        let { classes, config } = this.props
-        this.layoutHasChildren = false
+        let { config } = this.props
         config = config ? Object.values(config) : []
-        return (
-            <>
-                {
-                    config[0] ?
-                        <div className={classes.root}>
-                            <div className={classes.banner}>
-                                <a className={`${classes.bannerLink} ${classes.bannerPaddng}`} href={serverURL}>Go to Admin Site</a>
-                                <div className={classes.bannerPaddng} onClick={this.onLogout}>Logout</div>
-                            </div>
-                            {config.map(this.createLayout)}
-                        </div>
-                        : <div></div>
-                }
-            </>
+        return ( config[0] ?
+            <Container>
+                <Banner>
+                    <BannerLink href={serverURL}>Go to Admin Site</BannerLink>
+                    <BannerLink onClick={this.onLogout}>Logout</BannerLink>
+                </Banner>
+                {config.map(this.createLayout)}
+            </Container>
+            : <div></div>
         )
     }
 }
@@ -167,7 +166,6 @@ const mapDispatchToProps = dispatch => ({
 })
 
 Dashboard.propTypes = {
-    classes: PropTypes.object.isRequired,
     getDataIfNeeded: PropTypes.func.isRequired,
     setDataStale: PropTypes.func.isRequired,
     calendar: PropTypes.object,
@@ -176,4 +174,4 @@ Dashboard.propTypes = {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Dashboard))
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard)

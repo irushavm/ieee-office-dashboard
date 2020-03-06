@@ -1,15 +1,22 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import withStyles from 'react-jss'
+import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { performLogin, clearLoginMessage } from '../../actions'
 
 
 import Dashboard from '../Dashboard'
-import Login from '../Login'
+import { Login } from '../Login'
 import { body } from '../../styles'
 
-const styles = { body }
+
+const Container = styled.div`
+    background: ${body.background};
+    font-family: ${body.fontFamily};
+    padding: ${body.padding};
+    height: ${body.height};
+    overflow: ${body.overflow};
+`
 
 class Window extends Component {
     componentDidMount() {
@@ -21,22 +28,21 @@ class Window extends Component {
     }
 
     render() {
-        const { accountSuccess, accountError, classes } = this.props
+        const { accountSuccess, accountError } = this.props
         return (
-            <div className={classes.body}>
+            <Container>
                 {
                     !accountSuccess
                         ? <Login onSubmit={this.userLogin.bind(this)} message={accountError ? accountError.message : ''} />
                         : <Dashboard />
                 }
-            </div>
+            </Container>
         )
     }
 }
 
 
 Window.propTypes = {
-    classes: PropTypes.object.isRequired,
     performLogin: PropTypes.func.isRequired,
     clearLoginMessage: PropTypes.func.isRequired,
     accountError: PropTypes.object,
@@ -53,4 +59,4 @@ const mapDispatchToProps = dispatch => ({
     clearLoginMessage: () => dispatch(clearLoginMessage())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Window))
+export default connect(mapStateToProps, mapDispatchToProps)(Window)

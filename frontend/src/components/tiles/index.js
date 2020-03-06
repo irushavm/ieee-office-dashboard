@@ -1,4 +1,4 @@
-import InfoTile from './InfoTile'
+import { InfoTile } from './InfoTile/InfoTile'
 
 export default {
     InfoTile,

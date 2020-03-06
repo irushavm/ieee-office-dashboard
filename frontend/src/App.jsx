@@ -1,16 +1,12 @@
 import React, { Component } from 'react'
-import withStyles from 'react-jss'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import configureStore from './configureStore'
 
 
 import Window from './components/Window'
-import { body } from './styles'
 
 import './App.css'
-
-const styles = { body }
 
 class App extends Component {
     constructor(props) {
@@ -39,5 +35,4 @@ class App extends Component {
     }
 }
 
-const AppWithStyles = withStyles(styles)(App)
-export default (() => <AppWithStyles />) // eslint-disable-line
+export default (() => <App />) // eslint-disable-line
