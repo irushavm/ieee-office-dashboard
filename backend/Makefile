@@ -9,7 +9,7 @@ db-flush:
 
 db-populate:
 	python3 manage.py makemigrations --settings=dashyserver.settings.dev
-	python3 manage.py migrate --settings=dashyserver.settings.dev
+	python3 manage.py migrate --settings=dashyserver.settings.dev --run-syncdb
 	python3 manage.py loaddata fixtures/credentials --settings=dashyserver.settings.dev
 
 

@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { TileFrame } from '../TileFrame'
 
 import { Tile } from '../Tile'
-import tiles from '../tiles'
 import { getDataIfNeeded, setDataStale, getConfig } from '../../actions'
 import { serverURL } from '../../App.config'
 import services from '../../services'
@@ -46,7 +45,7 @@ const BannerLink = styled.a`
 const LayoutContainer = styled.div`
     display: flex;
     ${(props) => css`
-        flex: ${props.flexBasis}%;
+        ${props.flexBasis ? `flex: ${props.flexBasis}%;` : ``}
         flex-direction: ${props.flexDir};
     `}
 `
@@ -79,32 +78,26 @@ class Dashboard extends Component {
         this.props.getDataIfNeeded(name, serviceConfig)
     }
 
-    createLayout(element, index) {
-        const flexAmount = (element.h === 1) ? element.w : element.h
-        this.layoutLevels++
+    createLayout(element, layoutDir, key) {
+        const flexAmount = element.ratio
         if (element.tile) {
-            const tileName = element.tile.name
-            const tileType = tileName[0].toUpperCase() + tileName.slice(1)
-            const TileElement = tiles[`${tileType}Tile`]
+            const tileName = element.tile
             // Relay information from calendar to the info tile
-            let tileData
-            if (tileType === 'Info') {
-                tileData = this.props.calendar
-            } else {
-                tileData = this.props[tileName]
-                const serviceConfig = element.tile.config
-                const serviceTimeout = services.user.convertConfigTimeoutToMS(serviceConfig.timeout)
+            const tileConfig = this.props.config.tile.find(e => e.tile === tileName)
+            const tileData = this.props[tileConfig.service]
+            if (tileName !== 'info') {
+                const serviceConfig = this.props.config.service.find(e=>e.service === element.tile)
+                const serviceTimeout = services.user.convertConfigTimeoutToMS(serviceConfig.config.refreshTimeout)
                 if(!this.serviceInit.includes(tileName)) {
-                    this.fetchDatasource(tileName, serviceConfig)
-                    this.serviceIntervals.push(setInterval(() => this.fetchDatasource(tileName, serviceConfig), serviceTimeout))
+                    this.fetchDatasource(tileName, serviceConfig.config)
+                    this.serviceIntervals.push(setInterval(() => this.fetchDatasource(tileName, serviceConfig.config), serviceTimeout))
                     this.serviceInit.push(tileName)
                 }
             }
-
             const tileFrameProps = {
-                key: `level-${this.layoutLevels}-${index}`,
+                key: `${key}-frame`,
                 loading: tileData && tileData.isFetching,
-                provider: tileType,
+                provider: tileName,
                 error: tileData && tileData.error,
                 style: {
                     flex: `${flexAmount * 100}%`,
@@ -112,26 +105,19 @@ class Dashboard extends Component {
                 }
             }
 
-            if (['info'].includes(tileName)) {
-                return (
-                    <TileFrame {...tileFrameProps}>
-                        <TileElement card={tileData} />
-                    </TileFrame>
-                )
-            }
             return <TileFrame {...tileFrameProps}>
-                <Tile name={tileName} config={tiles.config[tileName]} data={tileData} />
+                <Tile name={tileName} config={this.props.config.tile.find(e => e.tile === tileName)} data={tileData} />
             </TileFrame>
         }
 
         // Create layout and call function recursively
-        const flexDir = element.layout[0].h === 1 ? 'row' : 'column'
         return (
-            <LayoutContainer key={`level-${this.layoutLevels}-${index}`}
-                flexBasis={flexAmount * 100}
-                flexDir={flexDir}
+            <LayoutContainer key={`${key}`}
+                style={{height: `${element.ratio? '' : '100%'}`} }
+                flexBasis={(flexAmount * 100)}
+                flexDir={layoutDir}
             >
-                {element.layout.map(this.createLayout)}
+                {element.layout.map((layout, index)=> this.createLayout(layout, layout.layoutDir, `${key}-${index}`))}
             </LayoutContainer>
         )
     }
@@ -142,17 +128,17 @@ class Dashboard extends Component {
     }
 
     render() {
-        let { config } = this.props
-        config = config ? Object.values(config) : []
-        return ( config[0] ?
+        let { layout } = this.props.config || {}
+
+        return ( layout ?
             <Container>
                 <Banner>
                     <BannerLink href={serverURL}>Go to Admin Site</BannerLink>
                     <BannerLink onClick={this.onLogout}>Logout</BannerLink>
                 </Banner>
-                {config.map(this.createLayout)}
+                {this.createLayout(layout,layout.layoutDir, 'layout')}
             </Container>
-            : <div></div>
+            : null
         )
     }
 }
@@ -169,7 +155,7 @@ Dashboard.propTypes = {
     getDataIfNeeded: PropTypes.func.isRequired,
     setDataStale: PropTypes.func.isRequired,
     calendar: PropTypes.object,
-    config: PropTypes.object.isRequired,
+    config: PropTypes.object,
     getConfig: PropTypes.func
 }
 

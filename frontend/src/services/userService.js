@@ -43,14 +43,17 @@ export default {
         return timeout
     },
     getConfig: async (access) => {
-        const response = await fetch(`${AppConfig.serverURL}/api/config/`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access}`
-            },
-            method: 'GET'
-        })
-        const { config } = await handleErrors(response)
-        return Object.values(JSON.parse(config))
+
+        return Promise.all([ 'tile', 'service', 'layout' ].map( async (type) => {
+            const response = await fetch(`${AppConfig.serverURL}/api/config/?type=${type}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${access}`
+                },
+                method: 'GET'
+            })
+            const { config } = await handleErrors(response)
+            return JSON.parse(config)
+        }))
     }
 }

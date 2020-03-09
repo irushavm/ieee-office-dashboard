@@ -60,7 +60,11 @@ export const getConfig = () => async (dispatch, getState) => {
     try {
         const { access } = getState().account.data
         const resJson = await services.user.getConfig(access)
-        return dispatch(getConfigSuccess(resJson))
+        return dispatch(getConfigSuccess({
+            tile: resJson[0],
+            service: resJson[1],
+            layout: resJson[2]
+        }))
     } catch (error) {
         return dispatch(getConfigFailure(error))
     }

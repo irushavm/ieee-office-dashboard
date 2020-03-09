@@ -5,7 +5,7 @@ import { getValueAtPath, useInterval } from "../../helpers/";
 
 import { TileSliderItem } from "./TileSliderItem";
 
-import { TextXS, TextS, TextM, TextL, TextXL, TextXXL, Img } from "./TileItems";
+import { TextXS, TextS, TextM, TextL, TextXL, TextXXL, Img, Clock } from "./TileItems";
 
 type TileProps = {
   config: TileConfig,
@@ -54,7 +54,8 @@ const createTileLayout = (
     display: "flex",
     flexDirection,
     flex: `1 ${flexRatio * 100}%`,
-    justifyContent: align
+    justifyContent: align,
+    ...item.layoutStyle
   };
 
   let element, elementData;
@@ -86,7 +87,13 @@ const createTileLayout = (
         element = <TextXXL style={item.style}>{elementData}</TextXXL>
         break;
       case TileElementTypes.img:
-        element = <Img src={elementData} style={item.style}></Img>;
+        element = <Img style={item.style} src={elementData}></Img>
+        break;
+      case TileElementTypes.clock:
+        element = <Clock style={item.style} interval={item.interval} format={item.format}></Clock>
+        break;
+      case TileElementTypes.html:
+        element = <div style={item.style} dangerouslySetInnerHTML={{__html: elementData}}></div>
         break;
     }
   }
@@ -102,9 +109,10 @@ const createTileLayout = (
   );
 };
 
-export const Tile = ({ config, data, name }: TileProps) => {
-  let [show, setShow] = useState(Array.from(Array(config.multi).keys()));
+export const Tile = ({ config, data, name } : TileProps) => {
+  let [show, setShow] = useState(Array.from(Array(config.multi || 0).keys()));
   useInterval(() => {
+    if (!config.multi) return
     const showCopy = [...show];
     /* Hide all slides */
     setShow(show.map(_ => -1));
@@ -122,7 +130,7 @@ export const Tile = ({ config, data, name }: TileProps) => {
     return (
         <TileRoot>
             {config.title! && <Title>{config.title}</Title>}
-            <TileContainer titleExists={config.title!}>
+            <TileContainer style={elementStyles} titleExists={config.title!}>
                 {config.layout.map((layoutItem, index) =>
                     createTileLayout(layoutItem, data, config.align, `${name}-${index}`)
                 )}

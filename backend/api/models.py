@@ -1,4 +1,5 @@
 from django.db import models
+from enum import Enum
 
 
 class APIKeyProvider(models.Model):
@@ -10,10 +11,18 @@ class APIKeyProvider(models.Model):
     class Meta:
         ordering = ('created',)
 
+class DashboardConfigType(Enum):
+    layout = 'layout'
+    service = 'service'
+    tile = 'tile'
 
-class ServiceConfig(models.Model):
+class DashboardConfig(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    owner = models.OneToOneField('auth.User', on_delete=models.CASCADE, unique=True)
+    owner = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    config_type = models.CharField(
+        max_length=7,
+        choices=[(tag.name, tag.value) for tag in DashboardConfigType]
+    )
     config = models.TextField()
 
     class Meta:

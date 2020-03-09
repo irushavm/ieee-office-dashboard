@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import APIKeyProvider, ServiceConfig
+from api.models import APIKeyProvider, DashboardConfig
 
 
 class APIKeyProviderSerializer(serializers.ModelSerializer):
@@ -8,7 +8,7 @@ class APIKeyProviderSerializer(serializers.ModelSerializer):
         fields = ('name', 'api_id', 'api_key')
 
 
-class ServiceConfigSerializer(serializers.ModelSerializer):
+class DashboardConfigSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ServiceConfig
-        fields = ('config')
+        model = DashboardConfig
+        fields = ('config', 'config_type')
