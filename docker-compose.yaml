@@ -1,0 +1,34 @@
+version: '3'
+services:
+    db:
+      image: postgres
+      environment:
+        POSTGRES_HOST_AUTH_METHOD: "trust"
+      volumes:
+        - db_data:/var/lib/postgresql/data
+    web:
+      build:
+        context: ./
+        dockerfile: dev.Dockerfile
+        args:
+          django_settings_module: 'dashyserver.settings.dev'
+      ports:
+        - "8000:8000"
+      depends_on:
+        - db
+      volumes:
+        - web_api_migrations:/app/api/migrations
+        - web_static:/app/static
+      command: >
+          /bin/sh -c "python manage.py makemigrations &&
+          python manage.py migrate &&
+          python manage.py collectstatic --noinput &&
+          python manage.py shell -c \"from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'adminpass')\" &&
+          gunicorn dashyserver.wsgi --log-file=- --bind 0.0.0.0"
+volumes:
+  web_api_migrations:
+    driver: local
+  web_static:
+    driver: local
+  db_data:
+    driver: local
