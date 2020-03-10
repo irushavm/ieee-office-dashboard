@@ -19,7 +19,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ALLOWED_HOSTS = [
     '0.0.0.0',
     '127.0.0.1',
-    'localhost'
+    'localhost',
+    os.environ.get('DJANGO_ALLOW_HOST')
 ]
 
 # Quick-start development settings - unsuitable for production

@@ -7,14 +7,14 @@ ENV PYTHONUNBUFFERED 1
 
 
 # install psycopg2
-RUN apk update 
+RUN apk update
 RUN apk add --virtual build-deps gcc python3-dev musl-dev
 RUN apk add postgresql-dev
 RUN pip install psycopg2 pipenv
 RUN apk del build-deps
 
 # copy project
-ADD backend /app
+COPY backend /app
 
 # set work directory
 WORKDIR /app
@@ -23,8 +23,7 @@ WORKDIR /app
 RUN pipenv lock --requirements > requirements.txt
 RUN pip install -r requirements.txt
 
-ARG django_settings_module
-ENV DJANGO_SETTINGS_MODULE ${django_settings_module}
+ENV DJANGO_SETTINGS_MODULE dashyserver.settings.prod
 
 # add and run as non-root user
 RUN adduser -D webuser
@@ -36,4 +35,4 @@ VOLUME /app/api/migrations
 USER webuser
 
 # run gunicorn
-CMD gunicorn dashyserver.wsgi --log-file=- --bind 0.0.0.0
+CMD python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn dashyserver.wsgi --log-file=- --bind 0.0.0.0:$PORT
